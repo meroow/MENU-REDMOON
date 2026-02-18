@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Онлайн меню — Сеты</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+      color:#fff;
+      min-height:100vh;
+      background: url("img/bj.jpeg") center/cover no-repeat fixed;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.25);
+      pointer-events:none;
+    }
+
+    .page{
+      position:relative;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 14px 28px;
+    }
+
+    /* Заголовок как в PDF: уголок + текст */
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin: 8px 0 16px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 900;
+      font-size: 26px;
+    }
+    .corner{
+      width:26px;height:26px;
+      border:2px solid rgba(255,255,255,.85);
+      border-right:none;
+      border-bottom:none;
+      opacity:.95;
+      flex:0 0 auto;
+    }
+
+    /* Карточка как “Крем супы” */
+    .item{
+      position:relative;
+      margin: 18px 0;
+      min-height: 220px;
+    }
+    .band{
+      position:relative;
+      background: rgba(0,0,0,.55);
+      border-radius: 2px;
+      min-height: 170px;
+      padding: 24px 22px;
+      display:flex;
+      align-items:center;
+    }
+    .text{
+      width:100%;
+      max-width: 520px;
+    }
+    .name{
+      font-weight: 900;
+      font-size: 28px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      line-height: 1.05;
+    }
+    .desc{
+      margin-top: 8px;
+      font-size: 12px;
+      opacity:.85;
+      line-height: 1.35;
+    }
+    .price{
+      position:absolute;
+      right: 22px;
+      bottom: 14px;
+      font-weight: 900;
+      font-size: 26px;
+      letter-spacing: .02em;
+      opacity: .95;
+      white-space:nowrap;
+    }
+
+    .plate{
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 22px 45px rgba(0,0,0,.7);
+      border: 6px solid rgba(255,255,255,.06);
+      z-index: 2;
+    }
+    .mini{
+      position:absolute;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 16px 28px rgba(0,0,0,.75);
+      border: 4px solid rgba(255,255,255,.06);
+      top: calc(50% + 65px);
+      transform: translateY(-50%);
+      z-index: 3;
+    }
+
+    .item.right .plate{ right: 12px; }
+    .item.right .mini { right: 190px; }
+    .item.right .band { padding-right: 285px; justify-content:center; text-align:center; }
+
+    .item.left  .plate{ left: 12px; }
+    .item.left  .mini { left: 190px; }
+    .item.left  .band { padding-left: 285px; justify-content:flex-start; text-align:left; }
+
+    .foot{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top: 14px;
+      font-size: 12px;
+      opacity:.8;
+    }
+
+    /* Телефон: уменьшаем, но НЕ центрируем */
+    @media (max-width: 540px){
+      .section-title{ font-size: 22px; }
+      .corner{ width:22px;height:22px; }
+
+      .item{ min-height: 240px; }
+      .plate{ width: 170px; height: 170px; }
+      .mini { width: 58px; height: 58px; top: calc(50% + 50px); }
+
+      .item.right .band{ padding-right: 210px; }
+      .item.left  .band{ padding-left: 210px; }
+
+      .name{ font-size: 22px; }
+      .desc{ font-size: 11px; }
+      .price{ right: 14px; bottom: 10px; font-size: 22px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page" id="sets">
+    <div class="section-title">
+      <span class="corner"></span>
+      <span>Сеты</span>
+    </div>
+
+    <div id="setsList"></div>
+
+    <div class="foot">
+      <span>Обслуживание 10%</span>
+      <span>@redmoon_sushi_tdk</span>
+    </div>
+  </main>
+
+  <script>
+    // ДАННЫЕ СЕТОВ
+    const sets = [
+      { n: 1,  price: 4600 },
+      { n: 2,  price: 4990 },
+      { n: 3,  price: 14990 },
+      { n: 88, price: 4990 },
+      { n: 23, price: 5990 },
+      { n: 98, price: 7400 },
+      { n: 16, price: 7600 },
+      { n: 71, price: 8490 },
+      { n: 86, price: 8690 },
+      { n: 79, price: 8990 },
+      { n: 99, price: 8990 },
+      { n: 19, price: 9400 },
+      { n: 32, price: 9500 },
+      { n: 55, price: 9790 },
+      { n: 20, price: 10390 },
+      { n: 66, price: 10490 },
+      { n: 13, price: 11990 },
+      { n: 65, price: 12190 },
+      { n: 72, price: 13900 },
+      { n: 85, price: 22900 },
+      { n: 58, price: 25590 },
+    ];
+
+    const fmtPrice = (x) => String(x).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "тг";
+
+    const list = document.getElementById("setsList");
+
+    sets.forEach((s, idx) => {
+      const side = (idx % 2 === 0) ? "right" : "left"; // чередование как в PDF
+      const el = document.createElement("article");
+      el.className = `item ${side}`;
+
+      // img/sushi.jpg — тестовое фото, потом заменишь на реальные
+      el.innerHTML = `
+        <img class="plate" src="img/${s.n}.jpeg" alt="Сет №${s.n}">
+        <div class="band">
+          <div class="text">
+            <div class="name">Сет №${s.n}</div>
+            <div class="desc">Состав: уточняется</div>
+          </div>
+          <div class="price">${fmtPrice(s.price)}</div>
+        </div>
+      `;
+      
+
+      list.appendChild(el);
+    });
+  </script>
+</body>
+</html>
